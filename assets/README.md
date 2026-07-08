@@ -4,13 +4,59 @@ This folder holds real UI and icon assets for `cowlsly_console_simple_settings_r
 
 ## Naming rules
 
-- Use lower_snake_case file names.
+- Use `lower_snake_case` file names.
+- Prefix with `simple_settings_` for suite-wide reuse.
+- Suffix transparent assets with `_transparent`.
 - Transparent UI pieces should be PNG or SVG.
 - Assets should remain reusable across the Cowlsly suite where possible.
 
-## Current assets
+## Folder layout
 
-- `assets/images/icons/simple_settings_volume_steps_icon_transparent.svg` — transparent SVG icon for volume-step controls and safe-listening warnings.
+```
+assets/
+├── ASSET_MANIFEST.md          # Labeled catalog (labels, purpose, phase mapping)
+├── README.md                  # This file
+├── branding/                  # Shared Cowlsly logo + forever-turning cogs background
+└── images/
+    ├── icons/                 # 512×512 control and module icons
+    └── ui/
+        └── volume_steps/      # Stepped volume level badges (0–90%)
+```
+
+## Phase 1 asset catalog
+
+See `ASSET_MANIFEST.md` for the full labeled index. Summary by roadmap scope:
+
+### A) Volume control
+
+| Asset | Path |
+|-------|------|
+| Module volume steps icon | `images/icons/simple_settings_volume_steps_icon_transparent.svg` |
+| Mute control icon | `images/icons/simple_settings_volume_mute_icon_transparent.svg` |
+| Hearing-damage warning icon | `images/icons/simple_settings_hearing_warning_icon_transparent.svg` |
+| Step badges (0 / 25 / 50 / 75 / 90%) | `images/ui/volume_steps/simple_settings_volume_step_*_percent_transparent.svg` |
+
+### B) CASMEA information entry
+
+| Asset | Path |
+|-------|------|
+| Info entry screen icon | `images/icons/simple_settings_casmea_info_entry_icon_transparent.svg` |
+
+### C) Developer options shortcut
+
+| Asset | Path |
+|-------|------|
+| Developer shortcut icon | `images/icons/simple_settings_developer_shortcut_icon_transparent.svg` |
+
+### Branding
+
+| Asset | Path |
+|-------|------|
+| Main module icon | `images/icons/simple_settings_app_icon_transparent.svg` |
+
+## Shared branding
+
+Every Cowlsly repo carries `assets/branding/` (small logo + forever-turning cogs background). See `Cowlsly/BRANDING.md`.
 
 ## Notes
 
