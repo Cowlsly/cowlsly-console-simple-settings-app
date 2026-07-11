@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "consumer_repository": "Cowlsly/cowlsly-console-simple-settings-app",
+  "canonical_repository": "Cowlsly/cowlsly-ui-assets-and-data-files",
+  "last_synchronized_date": null,
+  "status": "draft_non_destructive_audit",
+  "runtime_assets": [
+    {
+      "asset_id": "cowlsly.simple_settings.logo.runtime.v1",
+      "consumer_path": "app/src/main/res/drawable/cowlsly_logo_small.png",
+      "consumer_sha256": null,
+      "runtime_purpose": "Android runtime Cowlsly logo",
+      "canonical_source_path": null,
+      "canonical_sha256": null,
+      "transformation_performed": "existing_runtime_copy",
+      "code_references": ["Android drawable resource"],
+      "review_status": "retain_if_compiled_or_loaded"
+    }
+  ],
+  "canonical_ui_migration_candidates": [
+    "assets/branding/cowlsly_cogs_background_animated.svg",
+    "assets/branding/cowlsly_logo_small.png",
+    "assets/branding/cowlsly_logo_small_transparent.svg",
+    "assets/images/icons/",
+    "assets/images/ui/volume_steps/"
+  ],
+  "duplicate_candidates_requiring_sha256_confirmation": [
+    [
+      "Cowlsly/.gitbook/assets/cowlsly_logo_small.png",
+      "assets/branding/cowlsly_logo_small.png",
+      "app/src/main/res/drawable/cowlsly_logo_small.png"
+    ]
+  ],
+  "public_repository_security_rule": "No secret value, medical record, account export, private configuration, or credential may be committed. Findings report path and category only.",
+  "assets": []
+}
