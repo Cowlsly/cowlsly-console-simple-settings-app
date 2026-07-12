@@ -1,70 +1,47 @@
-# Cowlsly Simple Settings assets
+# Cowlsly Simple Settings generated and migration assets
 
-This folder holds real UI and icon assets for `cowlsly_console_simple_settings_repo_03`.
+This folder currently contains Phase 1 UI and icon files for `cowlsly_console_simple_settings_repo_03`. Reusable masters are being migrated to `Cowlsly/cowlsly-ui-assets-and-data-files`; files retained here are migration candidates or generated consumer copies.
+
+## Canonical rule
+
+- Canonical repository: `Cowlsly/cowlsly-ui-assets-and-data-files`
+- Canonical branch: `root`
+- Consumer contract: `../ui_asset_dependencies.json`
+- Consumer policy: `../UI_ASSET_SOURCE.md`
+- Do not add new reusable masters here.
+- Do not manually edit a generated copy.
+- Do not delete an existing file until canonical checksum and Java 21 Gradle validation pass.
 
 ## Naming rules
 
 - Use `lower_snake_case` file names.
-- Prefix with `simple_settings_` for suite-wide reuse.
-- Suffix transparent assets with `_transparent`.
-- Transparent UI pieces should be PNG or SVG.
-- Assets should remain reusable across the Cowlsly suite where possible.
+- Prefix Simple Settings-specific assets with `simple_settings_`.
+- Suffix transparent assets with `_transparent` where useful.
+- Transparent UI pieces must contain genuine alpha or be transparent SVG.
 
-## Folder layout
+## Current migration layout
 
-```
+```text
 assets/
-├── ASSET_MANIFEST.md          # Labeled catalog (labels, purpose, phase mapping)
-├── README.md                  # This file
-├── branding/                  # Shared Cowlsly logo + forever-turning cogs background
+├── ASSET_MANIFEST.md          # historical Phase 1 catalog + migration mapping
+├── README.md                  # this consumer/migration note
+├── branding/                  # legacy shared-branding copies pending canonical verification
 └── images/
-    ├── icons/                 # 512×512 control and module icons
+    ├── icons/                 # legacy/generated control and module icons
     └── ui/
-        └── volume_steps/      # Stepped volume level badges (0–90%)
+        └── volume_steps/      # legacy/generated volume badges
 ```
 
-## Phase 1 asset catalog
+## Phase 1 catalog
 
-See `ASSET_MANIFEST.md` for the full labeled index. Summary by roadmap scope:
+The exact historical file list remains in `ASSET_MANIFEST.md` and Git history. Canonical destinations are:
 
-### A) Volume control
+| Local group | Canonical destination |
+|---|---|
+| `branding/` | `assets/branding/cowlsly/compact/` and `assets/ui/backgrounds/cowlsly_machine/` |
+| `images/icons/` | `assets/ui/icons/simple_settings/` |
+| `images/ui/volume_steps/` | `assets/ui/controls/simple_settings/volume_steps/` |
 
-| Asset | Path |
-|-------|------|
-| Module volume steps icon | `images/icons/simple_settings_volume_steps_icon_transparent.svg` |
-| Mute control icon | `images/icons/simple_settings_volume_mute_icon_transparent.svg` |
-| Hearing-damage warning icon | `images/icons/simple_settings_hearing_warning_icon_transparent.svg` |
-| Step badges (0 / 25 / 50 / 75 / 90%) | `images/ui/volume_steps/simple_settings_volume_step_*_percent_transparent.svg` |
+## Obsolete policy
 
-### B) CASMEA information entry
-
-| Asset | Path |
-|-------|------|
-| Info entry screen icon | `images/icons/simple_settings_casmea_info_entry_icon_transparent.svg` |
-
-### C) Developer options shortcut
-
-| Asset | Path |
-|-------|------|
-| Developer shortcut icon | `images/icons/simple_settings_developer_shortcut_icon_transparent.svg` |
-
-### D) Security, privacy & device (vision phases 2–3)
-
-| Asset | Path |
-|-------|------|
-| Security & privacy zone icon | `images/icons/simple_settings_security_privacy_icon_transparent.svg` |
-| Device settings zone icon | `images/icons/simple_settings_device_settings_icon_transparent.svg` |
-
-### Branding
-
-| Asset | Path |
-|-------|------|
-| Main module icon | `images/icons/simple_settings_app_icon_transparent.svg` |
-
-## Shared branding
-
-Every Cowlsly repo carries `assets/branding/` (small logo + forever-turning cogs background). See `Cowlsly/BRANDING.md`.
-
-## Notes
-
-Simple Settings is the shared settings/data-entry module. CASMEA medical information entry belongs here rather than inside the CASMEA emergency-view app itself.
+The previous rule that every Cowlsly repository carries `assets/branding/` is retired. Shared branding has one canonical home. Android or documentation copies are allowed only when generated or synchronised from a pinned canonical commit and recorded by checksum.
