@@ -1,0 +1,132 @@
+name: Consolidate repository into root
+
+on:
+  push:
+    branches: [root]
+    paths: ['.github/workflows/consolidate_to_root.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: consolidate-repository-to-root
+  cancel-in-progress: false
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      STATE_FILE: ${{ runner.temp }}/branch_consolidation_state.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: root
+          fetch-depth: 0
+
+      - name: Merge every branch into root
+        run: |
+          git config user.name 'Marla-AI Repository Custodian'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --prune
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          def run(*args, check=True):
+              return subprocess.run(args, check=check, text=True, capture_output=True)
+          before = run('git', 'rev-parse', 'HEAD').stdout.strip()
+          refs = run('git', 'for-each-ref', '--format=%(refname:strip=3)', 'refs/remotes/origin').stdout.splitlines()
+          branches = sorted({name for name in refs if name and name not in {'HEAD', 'root'}})
+          results = []
+          for branch in branches:
+              tip = run('git', 'rev-parse', f'refs/remotes/origin/{branch}').stdout.strip()
+              if run('git', 'merge-base', '--is-ancestor', tip, 'HEAD', check=False).returncode == 0:
+                  results.append({'branch': branch, 'tip': tip, 'merge_status': 'already_contained'})
+                  continue
+              merge = run('git', 'merge', '--no-ff', '--no-edit', '--allow-unrelated-histories', '-m', f"Merge branch '{branch}' into root", tip, check=False)
+              if merge.returncode != 0:
+                  run('git', 'merge', '--abort', check=False)
+                  raise SystemExit(f'Merge conflict in {branch}; no deletion attempted.\n{merge.stdout}\n{merge.stderr}')
+              results.append({'branch': branch, 'tip': tip, 'merge_status': 'merged'})
+          tracked = run('git', 'ls-files').stdout.splitlines()
+          active_docs = {'README.md', 'ROADMAP.md', 'TODO.md', 'PATH.of.TRUTH.md', 'UI_ASSET_SOURCE.md', 'ui_asset_dependencies.json'}
+          for value in tracked:
+              path = Path(value)
+              workflow = value.startswith('.github/workflows/') and path.suffix in {'.yml', '.yaml'}
+              manifest = value.startswith('assets/manifests/') and path.suffix == '.json'
+              active = value in active_docs
+              if not (workflow or manifest or active):
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except (OSError, UnicodeDecodeError):
+                  continue
+              original = text
+              if workflow:
+                  for old, new in (('branches: [main]', 'branches: [root]'), ('branches: [master]', 'branches: [root]'), ('ref: main', 'ref: root'), ('ref: master', 'ref: root'), ('HEAD:main', 'HEAD:root'), ('HEAD:master', 'HEAD:root'), ('origin main', 'origin root'), ('origin master', 'origin root')):
+                      text = text.replace(old, new)
+                  text = re.sub(r'(?m)^(\s*-\s*)(main|master)(\s*)$', r'\1root\3', text)
+              if manifest or value == 'ui_asset_dependencies.json':
+                  text = text.replace('"canonical_branch": "main"', '"canonical_branch": "root"').replace('"canonical_branch": "master"', '"canonical_branch": "root"')
+              if active:
+                  for old, new in (('Active branch: `main`', 'Active branch: `root`'), ('Active branch: **`main`**', 'Active branch: **`root`**'), ('active branch `main`', 'active branch `root`'), ('active `main` branch', 'active `root` branch'), ('canonical branch `main`', 'canonical branch `root`'), ('on `main`', 'on `root`'), ('to `main`', 'to `root`')):
+                      text = text.replace(old, new)
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+          if run('git', 'diff', '--quiet', check=False).returncode != 0:
+              run('git', 'add', '-u')
+              run('git', 'commit', '-m', 'Activate root as the sole repository branch')
+          run('git', 'push', 'origin', 'HEAD:root')
+          for item in results:
+              if run('git', 'merge-base', '--is-ancestor', item['tip'], 'HEAD', check=False).returncode != 0:
+                  raise SystemExit(f"Uncontained branch remains: {item['branch']}")
+          Path(os.environ['STATE_FILE']).write_text(json.dumps({'schema_version': '1.0.0', 'repository': os.environ['GITHUB_REPOSITORY'], 'root_before': before, 'root_after_merge': run('git', 'rev-parse', 'HEAD').stdout.strip(), 'branches': results, 'deletion_results': [], 'remaining_branches': []}, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Delete non-root branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const state = JSON.parse(fs.readFileSync(process.env.STATE_FILE, 'utf8'));
+            for (const item of state.branches) {
+              try { await github.rest.git.deleteRef({owner: context.repo.owner, repo: context.repo.repo, ref: `heads/${item.branch}`}); state.deletion_results.push({branch: item.branch, result: 'deleted'}); }
+              catch (error) { state.deletion_results.push({branch: item.branch, result: 'failed', status: error.status || null, message: error.message}); }
+            }
+            const live = await github.paginate(github.rest.repos.listBranches, {owner: context.repo.owner, repo: context.repo.repo, per_page: 100});
+            state.remaining_branches = live.map(item => item.name).filter(name => name !== 'root').sort();
+            fs.writeFileSync(process.env.STATE_FILE, JSON.stringify(state, null, 2) + '\n');
+
+      - name: Record results
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          state = json.loads(Path(os.environ['STATE_FILE']).read_text(encoding='utf-8'))
+          deletion = {item['branch']: item for item in state['deletion_results']}
+          lines = ['# Branch consolidation report', '', f"Repository: `{state['repository']}`", '', f"Root before: `{state['root_before']}`", f"Root after merge: `{state['root_after_merge']}`", '', '## Consolidated branches', '']
+          if state['branches']:
+              lines += ['| Branch | Tip | Merge status | Deletion result |', '|---|---|---|---|']
+              for item in state['branches']:
+                  result = deletion.get(item['branch'], {'result': 'not_attempted'})
+                  detail = result['result'] + (f" ({result.get('message')})" if result.get('message') else '')
+                  lines.append(f"| `{item['branch']}` | `{item['tip']}` | {item['merge_status']} | {detail} |")
+          else:
+              lines.append('No non-root branch existed when the workflow ran.')
+          lines += ['', '## Remaining branches', '']
+          lines += [f"- `{name}`" for name in state['remaining_branches']] if state['remaining_branches'] else ['None. `root` is the only branch.']
+          lines += ['', 'Every deletion was attempted only after its branch tip was verified as an ancestor of `root`.', '']
+          Path('BRANCH_CONSOLIDATION_REPORT.md').write_text('\n'.join(lines), encoding='utf-8')
+          PY
+          git add BRANCH_CONSOLIDATION_REPORT.md
+          git commit -m 'Record root branch consolidation results'
+          git push origin HEAD:root
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          remaining = json.loads(Path(os.environ['STATE_FILE']).read_text(encoding='utf-8'))['remaining_branches']
+          if remaining:
+              raise SystemExit('GitHub retained protected branches: ' + ', '.join(remaining))
+          print('root is the only remaining branch.')
+          PY
