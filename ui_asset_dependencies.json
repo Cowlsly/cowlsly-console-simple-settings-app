@@ -1,11 +1,11 @@
 {
-  "schema_version": "1.0.0",
-  "asset_version": "2026.07.12.2",
+  "schema_version": "1.1.0",
+  "asset_version": "2026.07.12.4",
   "canonical_repository": "Cowlsly/cowlsly-ui-assets-and-data-files",
-  "canonical_branch": "root",
-  "canonical_commit": "93ea3cb1679b35ad8d929e81220ed80c9c4ff0c5",
+  "canonical_branch": "main",
+  "canonical_commit": "57092e589f0a71ecfd11b86c66114122babdbd4a",
   "last_sync_date": null,
-  "migration_state": "governance_converted_binary_import_pending",
+  "migration_state": "governance_audit_and_java21_ci_integrated_binary_import_pending",
   "assets": [
     {
       "source": "assets/ui_transitions/cowlsly_vault_transition/production/visuals/png/cowlsly_vault_door_left.png",
