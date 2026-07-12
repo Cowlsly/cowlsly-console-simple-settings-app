@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "asset_version": "2026.07.12.1",
+  "canonical_repository": "Cowlsly/cowlsly-ui-assets-and-data-files",
+  "canonical_branch": "root",
+  "canonical_commit": "93ea3cb1679b35ad8d929e81220ed80c9c4ff0c5",
+  "last_sync_date": null,
+  "migration_state": "governance_converted_binary_import_pending",
+  "assets": [
+    {
+      "source": "assets/ui_transitions/cowlsly_vault_transition/production/visuals/png",
+      "destination": "app/src/main/res/drawable-nodpi/cowlsly_vault_transition",
+      "directory": true,
+      "include": ["cowlsly_vault_door_left.png", "cowlsly_vault_door_right.png", "cowlsly_vault_frame.png"]
+    },
+    {
+      "source": "assets/ui_transitions/cowlsly_vault_transition/production/audio/ogg",
+      "destination": "app/src/main/res/raw/cowlsly_vault_transition",
+      "directory": true,
+      "include": ["cowlsly_transition_full_standard.ogg"]
+    }
+  ],
+  "required_canonical_groups": [
+    "assets/branding/cowlsly/compact",
+    "assets/ui/backgrounds/cowlsly_machine",
+    "assets/ui/icons/simple_settings",
+    "assets/ui/controls/simple_settings/volume_steps",
+    "assets/audio/ui"
+  ],
+  "generated_path_patterns": [
+    "app/src/main/res/drawable-nodpi/**",
+    "app/src/main/res/raw/**",
+    "assets/branding/**",
+    "assets/images/icons/**",
+    "assets/images/ui/**"
+  ],
+  "repository_specific_allowlist": [
+    "assets/documentation/**",
+    "app/src/test/resources/**",
+    "app/src/androidTest/resources/**"
+  ],
+  "notes": [
+    "The former every-repository-carries-branding policy is obsolete.",
+    "Existing local assets remain protected until canonical import and Java 21 Gradle validation pass.",
+    "Generated Android resources must not be edited manually."
+  ]
+}
