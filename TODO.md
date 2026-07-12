@@ -5,15 +5,17 @@
 - [x] Import the complete reusable Simple Settings asset set into the canonical UI repository.
 - [x] Verify byte identity and SHA-256 for the PNG logo, SVG logo/background, eight icons, and five volume-step controls.
 - [x] Pin verified immutable release `acf7ffaab736283daccd286d01abf60a8f2a80a2` and final canonical paths in `ui_asset_dependencies.json`.
+- [x] Retarget the canonical dependency branch to `root`.
 - [x] Convert local asset paths to declared generated consumer copies.
-- [x] Add main-only Java 21 build, tests, lint, and APK artifact CI.
-- [x] Merge the known asset-audit branch into active `main` history.
+- [x] Add root-only Java 21 build, tests, lint, and APK artifact CI.
+- [x] Merge all reviewed branch histories into `root`.
+- [x] Delete all non-root branches after ancestry verification.
 
 ## Remaining asset validation
 
 - [ ] Run deterministic canonical sync and write `.cowlsly_ui_generated.json`.
 - [ ] Synchronise vault-transition resources into valid `res/drawable-nodpi` and `res/raw` paths when the transition is enabled in the app.
-- [ ] Confirm the newest Java 21 CI run passes after the final dependency and README updates.
+- [ ] Confirm the newest Java 21 CI run passes after final dependency and documentation updates.
 - [ ] Repair Compose/XML references only where generated paths differ.
 - [ ] Remove obsolete local masters only after sync receipt, reference checks, and Java 21 validation pass.
 
@@ -33,8 +35,8 @@
 
 ## Repository administration
 
-- [x] Keep active development on `main`.
+- [x] Keep active development on `root`.
 - [x] Convert README and asset docs to the canonical UI consumer model.
 - [x] Retire the every-repository-carries-branding policy.
-- [x] Close the known maintenance PR after integrating its work.
-- [ ] Let the owner rename or remove the temporary `root` mirror and update the displayed default branch when convenient.
+- [x] Close known PRs after integrating their work.
+- [x] Confirm `root` as the default and only branch.
