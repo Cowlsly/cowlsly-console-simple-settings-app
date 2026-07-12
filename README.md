@@ -2,11 +2,11 @@
 
 <div align="center"><img src="Cowlsly/.gitbook/assets/cowlsly_logo_small.png" alt="Cowlsly Production" width="220"></div>
 
-## cowlsly\_console\_simple\_settings\_repo\_03
+## cowlsly_console_simple_settings_repo_03
 
 Cowlsly Simple Settings is the shared settings module for the Cowlsly Console suite.
 
-Cyberpunk UI in this repo follows the Cowlsly design language: neon glass panels over the **forever-turning cog machine** background (`assets/branding/cowlsly_cogs_background_animated.svg`). See `Cowlsly/BRANDING.md`.
+Cyberpunk UI follows the Cowlsly design language: neon glass panels over the **forever-turning cog machine** background. Reusable artwork is consumed from the canonical UI asset repository; local copies are generated platform resources.
 
 ### Current status
 
@@ -34,13 +34,18 @@ See `dev/dat/doc/SIMPLE_SETTINGS_VISION.md` for the full design.
 * CASMEA information entry screen (`CasmeaContentProvider` for repo 02).
 * Developer shortcut (gated; PIN re-entry; Shizuku + system dev intents).
 
+## Canonical UI asset source
+
+Reusable Cowlsly UI assets come from `Cowlsly/cowlsly-ui-assets-and-data-files` on the canonical `root` branch. This repository declares its pinned paths in `ui_asset_dependencies.json`; generated assets and Android resources must not be edited manually. See `UI_ASSET_SOURCE.md`.
+
 ### Documents
 
 * `dev/dat/doc/SIMPLE_SETTINGS_VISION.md` — **master settings app vision** (full scroll, all zones).
 * `ROADMAP.md` — active build phases.
 * `dev/dat/doc/ROADMAP.ORIGINAL.md` — founding context and rebuild notes.
-* `assets/README.md` — asset naming, folder layout, and Phase 1 catalog.
-* `assets/ASSET_MANIFEST.md` — labeled asset index with phase mapping.
-* `assets/branding/README.md` — shared Cowlsly logo and cogs background kit.
-* `Cowlsly/BRANDING.md` — suite-wide branding rules (logo + forever-turning machine).
+* `UI_ASSET_SOURCE.md` — canonical asset consumer policy and sync instructions.
+* `ui_asset_dependencies.json` — pinned canonical paths and generated destinations.
+* `assets/README.md` — legacy local-path classification during migration.
+* `assets/ASSET_MANIFEST.md` — historical Phase 1 asset index and canonical migration mapping.
+* `Cowlsly/BRANDING.md` — suite-wide branding design rules; canonical binaries live in the UI repository.
 * `Cowlsly/SUMMARY.md` — table of contents for this repo.
