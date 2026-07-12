@@ -1,12 +1,32 @@
 {
-  "schema_version": "1.1.0",
-  "asset_version": "2026.07.12.5",
+  "schema_version": "1.2.0",
+  "asset_version": "2026.07.12.6",
   "canonical_repository": "Cowlsly/cowlsly-ui-assets-and-data-files",
   "canonical_branch": "main",
-  "canonical_commit": "6d0366ccffacdbdd3258488451788c7c378a885e",
+  "canonical_commit": "7bf0fd91b244c325f2d74119817c7c5d15fb709a",
   "last_sync_date": null,
-  "migration_state": "governance_audit_and_java21_ci_integrated_binary_import_pending",
+  "migration_state": "svg_masters_canonical_and_reproducible_binary_exports_pending",
   "assets": [
+    {
+      "source": "assets/ui/icons/simple_settings",
+      "destination": "assets/images/icons",
+      "directory": true,
+      "include": ["*.svg"]
+    },
+    {
+      "source": "assets/ui/controls/simple_settings/volume_steps",
+      "destination": "assets/images/ui/volume_steps",
+      "directory": true,
+      "include": ["*.svg"]
+    },
+    {
+      "source": "assets/branding/cowlsly/compact/cowlsly_logo_small_transparent.svg",
+      "destination": "assets/branding/cowlsly_logo_small_transparent.svg"
+    },
+    {
+      "source": "assets/ui/backgrounds/cowlsly_machine/cowlsly_cogs_background_animated.svg",
+      "destination": "assets/branding/cowlsly_cogs_background_animated.svg"
+    },
     {
       "source": "assets/ui_transitions/cowlsly_vault_transition/production/visuals/png/cowlsly_vault_door_left.png",
       "destination": "app/src/main/res/drawable-nodpi/cowlsly_vault_door_left.png",
@@ -49,8 +69,9 @@
   ],
   "notes": [
     "The former every-repository-carries-branding policy is obsolete.",
-    "Existing local assets remain protected until canonical import and Java 21 Gradle validation pass.",
-    "Generated Android resources must not be edited manually.",
+    "Simple Settings SVG masters are now canonical in the UI repository and local SVG paths are reproducible generated copies.",
+    "Binary PNG/WebP/runtime exports remain protected until canonical transfer and a Java 21 Gradle validation pass.",
+    "Generated Android resources and generated SVG copies must not be edited manually.",
     "Android resources are copied directly into valid res type directories; no nested folders are used."
   ]
 }
