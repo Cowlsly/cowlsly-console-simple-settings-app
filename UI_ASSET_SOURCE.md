@@ -1,6 +1,6 @@
 # Cowlsly canonical UI asset source
 
-Reusable Cowlsly UI assets are owned by `Cowlsly/cowlsly-ui-assets-and-data-files` on active branch `main`. Simple Settings is a consumer and must not carry an independently maintained shared-branding master pack.
+Reusable Cowlsly UI assets are owned by `Cowlsly/cowlsly-ui-assets-and-data-files` on active branch `root`. Simple Settings is a consumer and must not carry an independently maintained shared-branding master pack.
 
 ## Canonical paths consumed
 
@@ -11,7 +11,7 @@ Reusable Cowlsly UI assets are owned by `Cowlsly/cowlsly-ui-assets-and-data-file
 - `assets/audio/ui/`
 - `assets/ui_transitions/cowlsly_vault_transition/`
 
-The Simple Settings SVG icons, five volume-step controls, compact Cowlsly logo, and animated cog background are now canonical in the UI repository. Their existing local SVG paths are declared generated copies in `ui_asset_dependencies.json`.
+The Simple Settings SVG icons, five volume-step controls, compact Cowlsly PNG/SVG logos, and animated cog-machine background are canonical in the UI repository. Their existing local paths are declared generated copies in `ui_asset_dependencies.json`.
 
 Binary PNG/WebP exports and Android runtime resources remain protected migration candidates until canonical transfer, checksum reconciliation, reference checks, and a fresh Java 21 Gradle build pass.
 
@@ -29,7 +29,7 @@ Generated Android resources and generated SVG copies must not be edited manually
 
 ## Updating
 
-1. Update the canonical asset and checksum manifest on `main`.
+1. Update the canonical asset and checksum manifest on `root`.
 2. Pin the new immutable canonical commit.
 3. Synchronise generated resources.
 4. Build with Java 21 using `./gradlew assembleDebug`.
