@@ -5,7 +5,7 @@
 Repository: `Cowlsly/cowlsly-console-simple-settings-app`  
 Active and only branch: `root`
 
-Cowlsly Simple Settings is the shared Android settings module for the Cowlsly Console suite.
+Cowlsly Simple Settings is the shared Android settings module and basic control shell for the Cowlsly Console suite.
 
 Cyberpunk UI follows the Cowlsly design language: neon glass panels over the **forever-turning cog machine** background. Reusable artwork is consumed from the canonical UI asset repository; local copies are generated platform resources.
 
@@ -28,8 +28,44 @@ One app. One scroll. The settings you need most are closest to you at the top: v
 - **Personal**: profile plus CASMEA medical-information entry, edited only here
 - **Device**: Wi-Fi, display, sound, storage, battery, apps, notifications, accounts through system intents
 - **Developer**: gated section with PIN re-entry and Android Developer Options
+- **Guardian proposals**: visible risk review and recommendation for privileged actions
+- **Anchor verification**: the human Anchor gives the final explicit YES or NO before execution
 
 See `dev/dat/doc/SIMPLE_SETTINGS_VISION.md` for the full design.
+
+## Guardian and Anchor trust model
+
+The Guardian is a reviewer, not an authority. It examines a proposed privileged action, identifies requested permissions, risk, evidence, warnings, reversibility, and expected effects, then returns a recommendation.
+
+The Anchor is the final human authority. The shell must present the Guardian's complete proposal and recommendation to the Anchor and request an explicit **YES** or **NO** decision. A recommendation must never be treated as approval.
+
+Required flow:
+
+```text
+Agent or module creates proposal
+        ↓
+Guardian reviews and recommends
+        ↓
+Anchor sees action, reason, permissions, risk, evidence, and warnings
+        ↓
+Anchor verifies YES or NO
+        ↓
+YES: execute only the approved proposal
+NO: stop without side effects
+```
+
+Security invariants:
+
+1. Every privileged, sensitive, destructive, external-app, account, security, privacy, payment, developer, or data-export action begins as a proposal.
+2. The Guardian may recommend approval, denial, or revision, but cannot authorise execution.
+3. Only the authenticated Anchor can issue the final decision.
+4. Missing, expired, ambiguous, failed, or unavailable verification means denial by default.
+5. Approval is bound to one immutable proposal version. Any material change requires a new review and new Anchor decision.
+6. The decision, proposal digest, Guardian recommendation, approval method, timestamp, result, and failure state are recorded in a local audit trail without storing secrets.
+7. No AI, plugin, background service, developer shortcut, or other module may bypass or simulate Anchor approval.
+8. The Anchor can cancel before execution and revoke future permissions or standing approvals.
+
+The first testable implementation may use an on-screen YES/NO gate. PIN, biometric, trusted-device, and other verification methods are later layers, not substitutes for the explicit decision.
 
 ## Phase 1 shipped
 
@@ -44,8 +80,8 @@ Reusable Cowlsly UI assets come from `Cowlsly/cowlsly-ui-assets-and-data-files` 
 ## Documents
 
 - `PATH.of.TRUTH.md` — current repository authority and safety rules.
-- `ROADMAP.md` — active build phases.
-- `TODO.md` — current work queue.
+- `ROADMAP.md` — active build phases, including Guardian and Anchor verification.
+- `TODO.md` — current work queue and acceptance criteria.
 - `dev/dat/doc/SIMPLE_SETTINGS_VISION.md` — master settings-app vision.
 - `dev/dat/doc/ROADMAP.ORIGINAL.md` — founding context and rebuild notes.
 - `UI_ASSET_SOURCE.md` — canonical asset consumer policy and sync instructions.
